@@ -37,3 +37,13 @@ serviceAccountKey.json
 # OS generated files
 Thumbs.db
 Desktop.ini
+
+# Terraform variables
+*.tfvars
+
+# Secrets
+*.pem
+*.key
+
+# Firebase logs
+firebase-debug.log
