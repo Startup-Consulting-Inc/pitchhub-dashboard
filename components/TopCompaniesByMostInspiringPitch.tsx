@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { collection, getDocs, query, where } from 'firebase/firestore';
 import { db } from '../firebaseConfig';
-import { NUM_DISPLAY, PROJECT_ID } from '../constant';
+import { PROJECT_ID } from '../constant';
 
 interface VoteData {
   companyName: string;
@@ -25,7 +25,7 @@ const TopCompaniesByMostInspiringPitch: React.FC = () => {
           where("projectId", "==", PROJECT_ID)
         );
         const querySnapshot = await getDocs(votesQuery);
-        
+
         // Count votes for each company based on most_investable field
         const voteCounts: { [key: string]: number } = {};
         querySnapshot.forEach((doc) => {
@@ -40,7 +40,6 @@ const TopCompaniesByMostInspiringPitch: React.FC = () => {
         const sortedCompanies = Object.entries(voteCounts)
           .map(([companyName, voteCount]) => ({ companyName, voteCount }))
           .sort((a, b) => b.voteCount - a.voteCount)
-          .slice(0, NUM_DISPLAY)
           .map((company, index) => ({
             ...company,
             rank: index + 1
@@ -80,7 +79,7 @@ const TopCompaniesByMostInspiringPitch: React.FC = () => {
     <div className="bg-white p-6 rounded-lg shadow-lg">
       <h2 className="text-2xl font-semibold text-gray-800 mb-4">
         <span role="img" aria-label="trophy" className="mr-2">🏆</span>
-        Top {NUM_DISPLAY} Most Investable Companies
+        Most Investable Company Rankings
       </h2>
       <div className="overflow-x-auto">
         <table className="min-w-full divide-y divide-gray-200">
@@ -99,7 +98,7 @@ const TopCompaniesByMostInspiringPitch: React.FC = () => {
                     {company.rank}
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-700">
-                    <Link 
+                    <Link
                       to={`/company/${encodeURIComponent(company.companyName)}`}
                       className="text-blue-600 hover:text-blue-800 hover:underline font-medium"
                     >

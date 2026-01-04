@@ -1,7 +1,6 @@
-import React, { useState, useEffect, useMemo } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { InvestmentData, CompanyInvestmentSummary } from '../types';
-import { NUM_DISPLAY } from '../constant';
 
 interface TopCompaniesTableProps {
   investments: InvestmentData[];
@@ -13,18 +12,18 @@ const TopCompaniesTable: React.FC<TopCompaniesTableProps> = ({ investments }) =>
   useEffect(() => {
     const companyTotals: { [key: string]: number } = {};
     investments.forEach(investment => {
-      companyTotals[investment.companyName] = (companyTotals[investment.companyName] || 0) + investment.investmentAmount;
+      const amount = investment.investmentAmount || 0;
+      companyTotals[investment.companyName] = (companyTotals[investment.companyName] || 0) + amount;
     });
 
     const sortedCompanies = Object.entries(companyTotals)
       .map(([companyName, totalInvestment]) => ({ companyName, totalInvestment }))
       .sort((a, b) => b.totalInvestment - a.totalInvestment)
-      .slice(0, NUM_DISPLAY)
       .map((company, index) => ({
         ...company,
         rank: index + 1,
       }));
-    
+
     setRankedCompanies(sortedCompanies);
   }, [investments]);
 
@@ -41,7 +40,7 @@ const TopCompaniesTable: React.FC<TopCompaniesTableProps> = ({ investments }) =>
     <div className="bg-white p-6 rounded-lg shadow-lg">
       <h2 className="text-2xl font-semibold text-gray-800 mb-1">
         <span role="img" aria-label="chart increasing" className="mr-2">��</span>
-        Top {NUM_DISPLAY} Total Investment Secured
+        Total Investment Secured Rankings
       </h2>
 
       <div className="overflow-x-auto">
@@ -65,7 +64,7 @@ const TopCompaniesTable: React.FC<TopCompaniesTableProps> = ({ investments }) =>
                 <tr key={company.companyName} className="hover:bg-gray-50 transition-colors duration-150">
                   <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{company.rank}</td>
                   <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-700">
-                    <Link 
+                    <Link
                       to={`/company/${encodeURIComponent(company.companyName)}`}
                       className="text-blue-600 hover:text-blue-800 hover:underline font-medium"
                     >

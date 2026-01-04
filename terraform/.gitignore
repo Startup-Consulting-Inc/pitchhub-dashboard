@@ -1,0 +1,125 @@
+# ========================================
+# Terraform .gitignore
+# ========================================
+# Prevent committing sensitive files and Terraform state
+
+# ========================================
+# Local .terraform directories
+# ========================================
+**/.terraform/*
+
+# ========================================
+# Terraform State Files
+# ========================================
+# State files contain sensitive infrastructure data
+*.tfstate
+*.tfstate.*
+
+# ========================================
+# Terraform Plan Files
+# ========================================
+tfplan
+*.tfplan
+
+# ========================================
+# Crash Log Files
+# ========================================
+crash.log
+crash.*.log
+
+# ========================================
+# Terraform Variable Files
+# ========================================
+# Exclude all .tfvars files, which may contain sensitive data
+*.tfvars
+*.tfvars.json
+
+# Include example files (these are safe)
+!terraform.tfvars.example
+
+# ========================================
+# Override Files
+# ========================================
+override.tf
+override.tf.json
+*_override.tf
+*_override.tf.json
+
+# ========================================
+# Lock Info Files
+# ========================================
+.terraform.tfstate.lock.info
+
+# ========================================
+# CLI Configuration Files
+# ========================================
+.terraformrc
+terraform.rc
+
+# ========================================
+# Secret Files
+# ========================================
+# Never commit secret files
+firebase-config.json
+*.pem
+*.key
+*.env
+.env
+.env.*
+
+# ========================================
+# Operating System Files
+# ========================================
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# Windows
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+$RECYCLE.BIN/
+
+# Linux
+*~
+
+# ========================================
+# Editor Directories and Files
+# ========================================
+# JetBrains IDEs
+.idea/
+*.iml
+*.iws
+*.ipr
+
+# Visual Studio Code
+.vscode/
+*.code-workspace
+
+# Vim
+*.swp
+*.swo
+*.swn
+*~
+
+# Emacs
+*~
+\#*\#
+.\#*
+
+# Sublime Text
+*.sublime-project
+*.sublime-workspace
+
+# ========================================
+# Backup Files
+# ========================================
+*.backup
+*.bak
+*.old
+
+# ========================================
+# Log Files
+# ========================================
+*.log

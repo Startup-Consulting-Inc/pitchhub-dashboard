@@ -7,14 +7,14 @@ import { getFirestore, Firestore } from "firebase/firestore";
 // and that Firestore has been enabled for this project in the Firebase console.
 // An incorrect projectId or Firestore not being set up for the project
 // is a common cause for "Service firestore is not available".
-const firebaseConfig = {
-  apiKey: "AIzaSyAB9462ndefnzzJg44HPa40P3m9vwPUFw0",
-  authDomain: "myresume-457817.firebaseapp.com",
-  projectId: "myresume-457817",
-  storageBucket: "myresume-457817.firebasestorage.app",
-  messagingSenderId: "711582759542",
-  appId: "1:711582759542:web:a2921fbd9a2967fae57d57",
-  measurementId: "G-BSN3FGV679"
+const firebaseConfig: FirebaseOptions = {
+  apiKey: "AIzaSyAkDprDP8Z5lsEJi-FFeUycgHMwO61mntg",
+  authDomain: "ces2026-87861.firebaseapp.com",
+  projectId: "ces2026-87861",
+  storageBucket: "ces2026-87861.firebasestorage.app",
+  messagingSenderId: "927583999358",
+  appId: "1:927583999358:web:844940e2f8d67b94f04f2f",
+  measurementId: "G-6KETBQ73PN"
 };
 
 let app: FirebaseApp;
@@ -28,8 +28,8 @@ try {
   } else {
     app = getApp(); // Get existing app if already initialized
   }
-  
-  db = getFirestore(app, "investorhub");
+
+  db = getFirestore(app);
   console.log("Firebase app and Firestore service initialized successfully.");
 
 } catch (e) {

@@ -3,7 +3,10 @@ FROM node:18-alpine AS builder
 
 WORKDIR /app
 
-# Copy package files
+# Build arguments for frontend
+ARG PROJECT_ID
+ENV PROJECT_ID=$PROJECT_ID
+
 COPY package*.json ./
 
 # Install dependencies (including dev dependencies for build)

@@ -1,0 +1,110 @@
+# ========================================
+# PitchHub Dashboard Terraform Configuration
+# ========================================
+# Copy this file to terraform.tfvars and fill in your values
+# DO NOT commit terraform.tfvars to version control
+#
+# Usage:
+#   cp terraform.tfvars.example terraform.tfvars
+#   # Edit terraform.tfvars with your actual values
+#   terraform init
+#   terraform plan
+#   terraform apply
+
+# ========================================
+# Required: GCP Project Configuration
+# ========================================
+
+cloud_run_project_id  = "ces2026-483021"  # Project for Cloud Run service
+firestore_project_id  = "ces2026-87861"   # Project for Firestore database
+region                = "us-central1"     # GCP region
+
+# ========================================
+# Required: Service Configuration
+# ========================================
+
+service_name              = "pitchhub-dashboard"
+pitch_event_project_id    = "1001"  # Application-level event ID (The Startup World Cup Seattle Regional)
+
+# ========================================
+# Docker Image Configuration
+# ========================================
+
+# Option 1: Use GCR (Google Container Registry) - RECOMMENDED
+# This is the default configuration matching ces2026-pitch
+initial_image_url         = "gcr.io/ces2026-483021/pitchhub-dashboard:latest"
+create_artifact_registry  = false
+
+# Option 2: Use Artifact Registry (alternative)
+# Uncomment these lines and comment out Option 1 above to use Artifact Registry
+# initial_image_url         = "us-central1-docker.pkg.dev/ces2026-483021/pitchhub-dashboard/pitchhub-dashboard:latest"
+# create_artifact_registry  = true
+# artifact_registry_repository = "pitchhub-dashboard"
+
+# ========================================
+# Cloud Run Resource Allocation
+# ========================================
+
+# CPU allocation (valid values: 1, 2, 4, 6, 8)
+cloud_run_cpu    = "1"
+
+# Memory allocation (valid values: 128Mi, 256Mi, 512Mi, 1Gi, 2Gi, 4Gi, 8Gi, 16Gi, 32Gi)
+cloud_run_memory = "512Mi"
+
+# Autoscaling configuration
+max_instances    = "10"      # Maximum autoscale instances
+min_instances    = "0"       # Minimum instances (0 = scale to zero when idle)
+
+# ========================================
+# Feature Flags
+# ========================================
+
+# Set to true when Gemini AI features are needed
+# This will inject GEMINI_API_KEY environment variable from Secret Manager
+enable_gemini_api_key = false
+
+# ========================================
+# Secrets (Already Configured in Secret Manager)
+# ========================================
+# The following secrets already exist in Secret Manager:
+# - firebase-api-key
+# - gemini-api-key
+#
+# View existing secrets:
+#   make list-secrets
+#
+# View secret values:
+#   make view-firebase-key
+#   make view-gemini-key
+#
+# Update secret values:
+#   make update-firebase-key
+#   make update-gemini-key
+#
+# Or use gcloud directly:
+#   echo "new-value" | gcloud secrets versions add firebase-api-key --data-file=- --project=ces2026-483021
+#   echo "new-value" | gcloud secrets versions add gemini-api-key --data-file=- --project=ces2026-483021
+
+# ========================================
+# Notes
+# ========================================
+#
+# PROJECT_ID Environment Variable:
+# - The pitch_event_project_id value (1001) is an application-level identifier
+# - It represents "The Startup World Cup Seattle Regional" pitch event
+# - This is NOT a GCP project ID - it filters investment data in Firestore
+#
+# Multi-Project Architecture:
+# - Cloud Run service runs in ces2026-483021
+# - Firestore database resides in ces2026-87861
+# - Service account has cross-project IAM permissions
+#
+# Firestore Database:
+# - Database name: "investorhub" (default database)
+# - Shared with ces2026-pitch (different projectId filter)
+# - Collections: investments, votes
+#
+# Deployment:
+# - After terraform apply, use ./deploy.sh to deploy application
+# - Or use: make deploy-app
+# - Image updates won't be overwritten by Terraform (lifecycle.ignore_changes)
